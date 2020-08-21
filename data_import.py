@@ -7,9 +7,6 @@ import time
 import matplotlib.pyplot as plt
 import random
 
-import xgboost as xgb
-from sklearn.metrics import mean_squared_error
-from sklearn import preprocessing
 
 
 url ="https://finance.yahoo.com/cryptocurrencies"
@@ -52,6 +49,7 @@ data['date']=now_time()
 
 #data=pd.DataFrame()
 names=data['Name']
+
 dfs = {str(name):data[data['Name']==name] for name in names}
 #dfs = {'data_' + str(name):data[data['Name']==name] for name in names}
 result=pd.DataFrame()
@@ -71,10 +69,11 @@ while True:
     data = pd.DataFrame(list_table[1:], columns=list_table[0])
     data=data[['Name','Price (Intraday)']]
     data=data.rename(columns={'Price (Intraday)':'Last Price'})
-
+    data['Last Price']=data['Last Price'].str.replace(",","").astype(float)
     data['date']=datetime.now().strftime("%X")
     result=pd.concat([result, data])
-    result.to_csv('/home/hduser/Documents/kafka/result/result.csv',header=True)
+    print (result)
+    result.to_csv('/home/hduser/Documents/kafka/result/result.csv',mode='a',header=False)
     
     #for name in data['Name']:
     #    plt.plot(result[result['Name']==name]['date'],result[result['Name']==name]['Last Price'])
