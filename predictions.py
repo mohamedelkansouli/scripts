@@ -20,11 +20,16 @@ def now_time():
     return (posix_timestamp_micros // 1000) # or `/ 1e3` for float
 
 prev=pd.DataFrame()
-result =pd.read_csv(r"/home/hduser/Documents/kafka/result/result.csv", header='infer')
 
 while True:
+ result =pd.read_csv(r"/home/hduser/Documents/kafka/result/result.csv", header='infer')
+
+ result.columns = ['index','Name','Last Price','date']
+
  #time.sleep(5)   
  for name in result['Name'].unique():
+        #name='Bitcoin USD'
+
      # split into input (X) and output (y) variables
         #X, y = result.iloc[:,:-1],result.iloc[:,-1]
         result=result.drop(result[result['Last Price']=='-'].index)
@@ -37,21 +42,24 @@ while True:
         #X_train = pd.DataFrame(encoder.fit_transform(X),columns=['date'])
 
         
-        for a in y['Last Price']:
-            if ',' in a:
-                y['Last Price']= [a.replace('.','') for a in y['Last Price']]
-                y['Last Price']= [a.replace(',','.') for a in y['Last Price']]
+        #for a in y['Last Price']:
+        #    if ',' in a:
+        #        y['Last Price']= [a.replace('.','') for a in y['Last Price']]
+        #        y['Last Price']= [a.replace(',','.') for a in y['Last Price']]
                 
-        y['Last Price']=pd.to_numeric(y['Last Price'])
+        #y['Last Price']=y['Last Price'].str.replace(",","").astype(float)
         forecast=pd.DataFrame()
        
-        forecast['Prev']=[mean(y['Last Price'][-3:])]
+        forecast['Prev']=[mean(y['Last Price'][-50:])]
         forecast['date']=datetime.now().strftime("%X")
         forecast['Name']=name
  
         prev=pd.concat([prev, forecast])      
-        #print(prev)
+        print(prev)
         #plt.plot(prev[prev['Name']==name]['date'],prev[prev['Name']==name]['Last Price'])
         #plt.show()        
- prev.to_csv('/home/hduser/Documents/kafka/result/prev.csv',header=True)       
+ prev=prev.drop_duplicates()
+
+ prev.to_csv('/home/hduser/Documents/kafka/result/prev.csv',mode='a',header=False,  index=False)     
+ del result 
     
