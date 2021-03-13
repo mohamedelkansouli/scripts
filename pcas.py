@@ -73,11 +73,24 @@ perm=pd.DataFrame([])
 
 for c in cols_2:
     
-    
+    print (c)
     combi=list(combinations(pd.DataFrame(result_pivot[c]).dropna()[c], 2))
-    combi='-'.join(combi)
-    combi=pd.DataFrame(combi)
-    perm = pd.concat([perm.reset_index(drop=True), combi], axis=1)
+    combi_a=pd.DataFrame([])
+    for n in combi:
+         print (n)
+         combi_b='-'.join(n)
+         combi_a=combi_a.append(pd.Series(combi_b),ignore_index=True) #pd.concat([combi_a, pd.Series(combi_b)]).reset_index(drop=True)
+    
+    combi_a=combi_a.rename(columns={0:c})
+    perm=pd.concat([perm.reset_index(drop=True), combi_a], axis=1)
+    
+    
+    
+    
+    
+    
+    
+    
 
     
 
