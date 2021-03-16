@@ -87,17 +87,19 @@ for c in cols_2:
 col_3=list(perm.columns)
 col_3.remove('data_1960_0')    
     
+perm_uni=pd.DataFrame(columns=["CountryCode","Cl_date"])
+
+import sys 
+sys.stdout = open("C:/world_intelligence/clusters_dates.csv", "w")
+
 for r in perm['data_1960_0'].unique():
     for c in col_3:
-        if r=perm['c']
+        if  r in perm[c].unique():
+            print (r+','+c)
+            
+sys.stdout.close()
 
-    
-    
-    
-    
-
-    
-
+        
 
 
   
