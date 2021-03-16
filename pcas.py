@@ -77,16 +77,20 @@ for c in cols_2:
     combi=list(combinations(pd.DataFrame(result_pivot[c]).dropna()[c], 2))
     combi_a=pd.DataFrame([])
     for n in combi:
-         print (n)
          combi_b='-'.join(n)
          combi_a=combi_a.append(pd.Series(combi_b),ignore_index=True) #pd.concat([combi_a, pd.Series(combi_b)]).reset_index(drop=True)
     
     combi_a=combi_a.rename(columns={0:c})
     perm=pd.concat([perm.reset_index(drop=True), combi_a], axis=1)
+    #perm=perm.append(combi_a,ignore_index=True)
+
+col_3=list(perm.columns)
+col_3.remove('data_1960_0')    
     
-    
-    
-    
+for r in perm['data_1960_0'].unique():
+    for c in col_3:
+        if r=perm['c']
+
     
     
     
